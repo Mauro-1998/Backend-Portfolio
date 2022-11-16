@@ -11,6 +11,7 @@ public class CarreraDTO {
     @NotNull
     @NotEmpty
     private String carrera;
+    
     @NotNull
     @NotEmpty
     private String facultad;

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -87,13 +88,13 @@ public class PersonaCarreraService {
     }
 
 
-    public ResponseEntity<JsonObject> listarCarrerasPorPersona(Integer idPersona) {
-        JsonObject response = new JsonObject();
+    public ResponseEntity<Set> listarCarrerasPorPersona(Integer idPersona) {
+        logger.info("LISTAR CARRERAS POR PERSONA SERVICE: " + idPersona);
         if(userRepository.findById(idPersona).isPresent()){
-            Set<Carrera> carreras = userCarreraRepository.findCarrerasByPersonaId(idPersona);
-            return ResponseEntity.status(200).body(response.put(EstadoMensaje.SUCCESS.toString(), carreras));
+            Set carreras = userCarreraRepository.findCarrerasByPersonaId(idPersona);
+            return ResponseEntity.status(200).body(carreras);
         }
-        return ResponseEntity.status(200).body(response.put(EstadoMensaje.SUCCESS.toString(), "[]"));
+        return ResponseEntity.status(200).body(new HashSet());
     }
 
 

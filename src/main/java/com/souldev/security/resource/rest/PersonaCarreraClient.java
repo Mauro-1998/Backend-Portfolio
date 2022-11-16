@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.ws.rs.QueryParam;
@@ -32,7 +34,7 @@ public interface PersonaCarreraClient {
     @GetMapping(value = "/listar-carreras-persona", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Este metodo lista a todos las carreras realizadas por una persona dada.")
     @ResponseBody
-    ResponseEntity<JsonObject> listarCarrerasPorPersona(@Min(1) @QueryParam("idPersona") Integer idPersona);
+    ResponseEntity<Set> listarCarrerasPorPersona(@Min(1) @QueryParam("idPersona") Integer idPersona);
 
 
     @GetMapping(value = "/listar-personas-carrera", produces = MediaType.APPLICATION_JSON_VALUE)

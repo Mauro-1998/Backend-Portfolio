@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class UserCarrera {
 
     @Basic
     @Column(name = "finalizado", nullable = false)
-    private boolean finalizado;
+    private Boolean finalizado;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

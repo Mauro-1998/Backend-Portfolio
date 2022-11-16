@@ -5,7 +5,6 @@ import com.souldev.security.dto.UserCursoDTO;
 import com.souldev.security.entities.Curso;
 import com.souldev.security.entities.UserCurso;
 import com.souldev.security.enums.EstadoMensaje;
-import com.souldev.security.mapper.PersonaCursoMapper;
 import com.souldev.security.repositories.CursoRepository;
 import com.souldev.security.repositories.UserCursoRepository;
 import com.souldev.security.security.entities.User;

@@ -5,6 +5,9 @@ import com.souldev.security.dto.PersonaCarreraDTO;
 import com.souldev.security.resource.rest.PersonaCarreraClient;
 import com.souldev.security.services.PersonaCarreraService;
 import io.vertx.core.json.JsonObject;
+
+import java.util.Set;
+
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +34,7 @@ public class UserCarreraResource implements PersonaCarreraClient {
     }
 
     @Override
-    public ResponseEntity<JsonObject> listarCarrerasPorPersona(Integer idPersona) {
+    public ResponseEntity<Set> listarCarrerasPorPersona(Integer idPersona) {
         return personaCarreraService.listarCarrerasPorPersona(idPersona);
     }
 

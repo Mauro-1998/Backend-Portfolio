@@ -15,7 +15,6 @@ public interface ExperienciaRepository extends CrudRepository<Experiencia, Integ
     @Query(value = "SELECT e FROM Experiencia e WHERE e.user.id=:idPersona")
     Set<Experiencia> findAllUserExperiences(Integer idPersona);
 
-
     @Query(value = "SELECT count(e) FROM Experiencia e WHERE e.puesto=:puesto AND e.empresa=:empresa AND e.user.id=:idPersona")
     Integer countExperienciasByEmpresaAndPuestoAndIdPersona(String empresa, String puesto, Integer idPersona);
 

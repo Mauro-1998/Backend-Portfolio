@@ -1,7 +1,6 @@
 package com.souldev.security.mapper;
 
 
-import com.souldev.security.dto.PersonaDTO;
 import com.souldev.security.security.dtos.NewUser;
 import com.souldev.security.security.entities.User;
 import io.vertx.core.json.JsonObject;

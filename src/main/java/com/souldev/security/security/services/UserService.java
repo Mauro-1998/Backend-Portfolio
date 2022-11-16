@@ -1,17 +1,28 @@
 package com.souldev.security.security.services;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import com.souldev.security.dto.AboutMeDTO;
 import com.souldev.security.dto.PersonaDTO;
+import com.souldev.security.dto.ResumeDTO;
+import com.souldev.security.dto.UserCarreraDTO;
+import com.souldev.security.dto.UserDTO;
+import com.souldev.security.entities.Carrera;
+import com.souldev.security.entities.UserCarrera;
 import com.souldev.security.enums.EstadoMensaje;
 import com.souldev.security.mapper.UserMapper;
-import com.souldev.security.repositories.CursoRepository;
-import com.souldev.security.security.dtos.NewUser;
+import com.souldev.security.repositories.ExperienciaRepository;
+import com.souldev.security.repositories.ReferenciaRepository;
+import com.souldev.security.repositories.UserCarreraRepository;
 import com.souldev.security.security.entities.User;
 import com.souldev.security.security.respositories.UserRepository;
+import com.souldev.security.services.PersonaCarreraService;
 
 import io.vertx.core.json.JsonObject;
 import org.jboss.logging.Logger;
@@ -24,9 +35,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class UserService {
 
-    public Optional<User> getByUserEmail(String email){
-        return userRepository.findByEmail(email);
-    }
+    
 
     @Autowired
     UserRepository userRepository;
@@ -34,16 +43,74 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ReferenciaRepository referenciaRepository;
+
+    @Autowired 
+    private UserCarreraRepository userCarreraRepository;
+
+
+
     UserMapper userMapper = new UserMapper();
 
     Logger logger = Logger.getLogger(getClass().getName());
 
+    public ResponseEntity<AboutMeDTO> listarPersonaAboutMe(String email){
+        AboutMeDTO aboutMeDTO = new AboutMeDTO();
+        Optional<User> user = userRepository.findByEmail(email);
+        User u;
+        if(user.isPresent()){
+            u = user.get();
+            aboutMeDTO.setUserDTO(new UserDTO(u.getNombre(),u.getApellido(),u.getNacimiento(),u.getDescripcion(),u.getDomicilio(),u.getEmail(),u.getTelefono(),u.getUrlFoto()));
+            aboutMeDTO.setReferencias(referenciaRepository.findAllUserReferences(u.getId()));
+            return ResponseEntity.status(200).body(aboutMeDTO);
+        }else{
+            logger.error("El email no es valido");
+        }
+        
+        return null;
+    }
 
-    public ResponseEntity<JsonObject> listarPersonas() {
-        JsonObject response = new JsonObject();
+
+    public ResponseEntity<ResumeDTO> listarPersonaResume(String email){
+        ResumeDTO resumeDTO = new ResumeDTO();
+        Optional<User> user = userRepository.findByEmail(email);
+        User u;
+        if(user.isPresent()){
+            u = user.get();
+            Set<Carrera> carreras = userCarreraRepository.findCarrerasByPersonaId(u.getId());
+            Set<UserCarreraDTO> userCarreraSet = new HashSet<>();
+            
+            for(Carrera c: carreras){
+                Optional<UserCarrera> ucOptional = userCarreraRepository.findByidPersonaAndidCarrera(u.getId(), c.getId());
+                if(ucOptional.isPresent()){
+                    UserCarrera u_c = ucOptional.get();
+                    UserCarreraDTO uc = new UserCarreraDTO();
+                    uc.setCarrera(c.getCarrera());
+                    uc.setFacultad(c.getFacultad());
+                    uc.setFin(u_c.getFin());
+                    uc.setInicio(u_c.getInicio());
+                    uc.setFinalizado(u_c.getFinalizado());
+                    uc.setDescripcion(u_c.getDescripcion());
+                    userCarreraSet.add(uc);
+                }
+            }
+            resumeDTO.setCarreras(userCarreraSet);
+            resumeDTO.setExperiencias(u.getExperiencias());
+            return ResponseEntity.status(200).body(resumeDTO);
+        }else{
+            logger.error("El email no es valido");
+        }
+        
+        return null;
+    }
+
+
+    public ResponseEntity<List> listarPersonas() {
+        
         List<User> personas = userRepository.findAll();
-        response.put(EstadoMensaje.SUCCESS.toString(), personas);
-        return ResponseEntity.status(200).body(response);
+
+        return ResponseEntity.status(200).body(personas);
     }
 
     public ResponseEntity<JsonObject> guardar(User p) {
@@ -125,6 +192,10 @@ public class UserService {
                     response.put(EstadoMensaje.ERROR.toString(), "No se pueden actualizar los datos porque la persona no esta registrada");
                     return ResponseEntity.status(409).body(response);
                 });
+    }
+
+    public Optional<User> getByUserEmail(String email){
+        return userRepository.findByEmail(email);
     }
     
 }

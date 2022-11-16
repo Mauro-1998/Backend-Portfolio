@@ -17,13 +17,16 @@ import java.util.Set;
 @Setter
 @Table(name = "carrera")
 public class Carrera {
+    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
     private int id;
+
     @Basic
     @Column(name = "carrera", nullable = false, length = 100)
     private String carrera;
+
     @Basic
     @Column(name = "facultad", nullable = false, length = 100)
     private String facultad;

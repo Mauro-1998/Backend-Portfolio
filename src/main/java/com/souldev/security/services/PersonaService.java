@@ -1,7 +1,6 @@
 package com.souldev.security.services;
 
 
-import com.souldev.security.entities.UserCurso;
 import com.souldev.security.enums.EstadoMensaje;
 import com.souldev.security.mapper.UserMapper;
 import com.souldev.security.repositories.CursoRepository;
@@ -38,12 +37,8 @@ public class PersonaService {
     Logger logger = Logger.getLogger(getClass().getName());
 
 
-    public ResponseEntity<JsonObject> listarPersonas() {
-        JsonObject response = new JsonObject();
-        List<User> personas = userRepository.findAll();
-
-        response.put(EstadoMensaje.SUCCESS.toString(), personas);
-        return ResponseEntity.status(200).body(response);
+    public ResponseEntity<List> listarPersonas() {
+        return ResponseEntity.status(200).body(userRepository.findAll());
     }
 
     public ResponseEntity<JsonObject> guardar(NewUser p) {

@@ -33,14 +33,19 @@ import java.util.Set;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private RoleService roleService;
+
     @Autowired
     private JwtProvider jwtProvider;
 
