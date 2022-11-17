@@ -6,6 +6,7 @@ import com.souldev.security.security.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,7 +36,11 @@ public class MainSecurity {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.cors().and().csrf().disable()
         .authorizeRequests()
+        .antMatchers("/persona/listar-persona-aboutMe").permitAll()
+        .antMatchers("/persona/listar-persona-resume").permitAll()
         .antMatchers("/auth/**").permitAll()
+        .antMatchers(HttpMethod.GET).permitAll()
+        /* 
         .antMatchers("/persona/listar-personas").permitAll()
         .antMatchers("/persona/listar-persona-resume").permitAll()
         .antMatchers("/persona/listar-persona-aboutMe").permitAll()
@@ -48,6 +53,7 @@ public class MainSecurity {
         .antMatchers("/experiencia/listar-experiencia/").permitAll()
         .antMatchers("/proyecto/listar-proyectos/").permitAll()
         .antMatchers("/referencia/listar-referencias/").permitAll()
+        */
         .anyRequest().authenticated()
         .and()
         .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
