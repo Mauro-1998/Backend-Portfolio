@@ -6,6 +6,8 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.URL;
+
 @Data
 public class ReferenciaDTO {
 
@@ -19,7 +21,7 @@ public class ReferenciaDTO {
     @Size(min = 1, max = 300)
     private String descripcion;
     @NotNull
-    @Size(min = 1, max = 100)
+    @URL
     private String fotoURL;
     @NotNull
     @Min(1)
