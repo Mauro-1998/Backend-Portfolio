@@ -23,7 +23,7 @@ public class Proyecto {
     @Column(name = "descripcion", nullable = false, length = 300)
     private String descripcion;
     @Basic
-    @Column(name = "url_foto", nullable = false, length = 300)
+    @Column(name = "url_foto", nullable = false, length = 1000)
     private String urlFoto;
     @ManyToOne()
     @JoinColumn(name = "persona_id", referencedColumnName = "id", nullable = false)
